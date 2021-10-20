@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
+
+import com.entities.Rol;
 import com.entities.Usuario;
 import com.exception.ServiciosException;
 
@@ -57,7 +59,17 @@ public class UsuarioBean implements UsuarioBeanRemote {
     } 
     
     public List<Usuario> mostrarTodos() {
-    	TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u",Usuario.class);
+    	TypedQuery<Usuario> query = em.createNamedQuery("Usuario.findAll",Usuario.class);
+    	return query.getResultList();
+    }
+    
+    public List<Usuario> findRol(Rol rol){
+    	TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u WHERE u.rol = ?1", Usuario.class).setParameter(1, rol);
+    	return query.getResultList();
+    }
+    
+    public List<Usuario> findUsuario(String correo, String contraseña) {
+    	TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u WHERE u.mail = ?1 AND u.clave = ?2", Usuario.class).setParameter(1, correo).setParameter(2, contraseña).setMaxResults(1);
     	return query.getResultList();
     }
 }

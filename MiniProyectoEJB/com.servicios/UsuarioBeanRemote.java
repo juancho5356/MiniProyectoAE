@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import com.entities.Rol;
 import com.entities.Usuario;
 import com.exception.ServiciosException;
 
@@ -14,4 +15,6 @@ public interface UsuarioBeanRemote {
 	void actualizar(Usuario usuario) throws ServiciosException;
 	void borrar(Long id) throws ServiciosException;
 	List<Usuario> mostrarTodos();
+	List<Usuario> findRol(Rol rol);
+	List<Usuario> findUsuario(String correo, String contraseña);
 }
