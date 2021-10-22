@@ -69,7 +69,8 @@ public class UsuarioBean implements UsuarioBeanRemote {
     }
     
     public List<Usuario> findUsuario(String correo, String contraseña) {
-    	TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u WHERE u.mail = ?1 AND u.clave = ?2", Usuario.class).setParameter(1, correo).setParameter(2, contraseña).setMaxResults(1);
+    	String sql = "SELECT * FROM USUARIOS WHERE MAIL = ? AND CLAVE = ?";
+    	Query query = em.createNativeQuery(sql, Usuario.class).setParameter(1, correo).setParameter(2, contraseña);
     	return query.getResultList();
     }
 }
