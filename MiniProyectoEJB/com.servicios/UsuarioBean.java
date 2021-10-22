@@ -47,9 +47,9 @@ public class UsuarioBean implements UsuarioBeanRemote {
          }
     }
     
-    public void borrar(Long id) throws ServiciosException {
+    public void borrar(Long documento) throws ServiciosException {
     	try{
-    	Usuario usuario = em.find(Usuario.class, id);
+    	Usuario usuario = em.find(Usuario.class, documento);
    		em.remove(usuario);
     	em.flush();
     
