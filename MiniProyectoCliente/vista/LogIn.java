@@ -1,4 +1,4 @@
-package Vista;
+package vista;
 
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -16,9 +16,11 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import com.entities.Usuario;
-import com.servicios.FuncionalidadBeanRemote;
-import com.servicios.UsuarioBeanRemote;
+
+import model.Usuario;
+
+import com.exception.ServiciosException;
+import com.servicios.Usuario_BeanRemote;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -32,10 +34,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.util.LinkedList;
-import java.util.List;
 
-public class LogIn extends JFrame implements MouseListener, MouseMotionListener {
+public class Login extends JFrame implements MouseListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -57,7 +57,7 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 	private JPanel barra;
 	
 	
-	public static String LogIn;
+	public static String Login;
 
 	/**
 	 * Launch the application.
@@ -66,7 +66,7 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LogIn frame = new LogIn();
+					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -80,7 +80,7 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 	 */
 	int xMouse, yMouse; 
 	
-	public LogIn() {
+	public Login() {
 		setLocationByPlatform(true);
 		setUndecorated(true);
 		setResizable(false);
@@ -92,7 +92,7 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 				
-		ImageIcon image2 = new ImageIcon(getClass().getResource("/Vista/fondo.jpg"));
+		ImageIcon image2 = new ImageIcon(getClass().getResource("/image/fondo.jpg"));
 		
 		panel = new JPanel();
 		panel.setBackground(SystemColor.control);
@@ -131,9 +131,9 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 				lblFondo.getHeight(),
 				Image.SCALE_DEFAULT
 		));
-		lblFondo.setIcon(new ImageIcon(LogIn.class.getResource("/Vista/fondo.jpg")));
+		lblFondo.setIcon(fondo2);
 		
-		lblUsuario = new JLabel("Correo electr\u00F3nico");
+		lblUsuario = new JLabel("Correo electrÃ³nico");
 		lblUsuario.setFont(new Font("Baskerville Old Face", Font.PLAIN, 20));
 		lblUsuario.setBounds(85, 143, 229, 42);
 		panel.add(lblUsuario);
@@ -144,7 +144,7 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 		textCorreo.setBorder(null);
 		textCorreo.setForeground(SystemColor.controlShadow);
 		textCorreo.setFont(new Font("Baskerville Old Face", Font.PLAIN, 16));
-		textCorreo.setText("Ingrese Correo electr\u00F3nico");
+		textCorreo.setText("Ingrese Correo electrÃ³nico");
 		textCorreo.setBounds(85, 195, 404, 25);
 		panel.add(textCorreo);
 		textCorreo.setColumns(10);
@@ -174,34 +174,47 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 		btnIngresar.setBounds(85, 372, 130, 42);
 		panel.add(btnIngresar);
 		btnIngresar.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
+
 			public void actionPerformed(ActionEvent e) {
-				if(!(textCorreo.getText().isEmpty() || String.valueOf(password.getPassword()).isEmpty() || textCorreo.getText().equals("Ingrese Nombre de Usuario") ||String.valueOf(password.getPassword()).equals("********"))) {
+				if(!(textCorreo.getText().isEmpty() || String.valueOf(password.getPassword()).isEmpty() || textCorreo.getText().equals("Ingrese Correo electrÃ³nico") ||String.valueOf(password.getPassword()).equals("********"))) {
+					
+					Usuario user = null;
 					
 					try {
-						UsuarioBeanRemote usuarioBean = (UsuarioBeanRemote)
-								InitialContext.doLookup("MiniproyectoEJB/UsuarioBean!com.servicios.UsuarioBeanRemote");
-						List<Usuario> usuarios = new LinkedList<>();
-						String correo = textCorreo.getText();
-						String contraseña = password.getText();
-						usuarios = usuarioBean.findUsuario(correo, contraseña);//No está funcionando este método
-						if(!(usuarios.size() == 0)) {
-							for(Usuario u: usuarios) {
-								String rol = usuarioBean.findRol(u.getRol()).toString();
-								JOptionPane.showMessageDialog(null, "Bienvenido " + rol + " " + u.getNombre());
+						String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+						Usuario_BeanRemote ad = (Usuario_BeanRemote) InitialContext.doLookup(dato);
+						
+						user = ad.findUser(textCorreo.getText(), String.valueOf(password.getPassword())); 
+						
+						if(user != null) {
+							JOptionPane.showMessageDialog(null, "Bienvenid@ al sistema " + user.getNombre()+" "+ user.getApellido() + " !");
+
+							if(user.getRole().getNombre().equals("Administrador")) {
+								Menu_Administrador menuA = new Menu_Administrador();
+								menuA.setVisible(true);
+								dispose();
+							}
+							if(user.getRole().getNombre().equals("Investigador")) {
+								Menu_Investigador menuI = new Menu_Investigador();
+								menuI.setVisible(true);
+								dispose();
+							}
+							if(user.getRole().getNombre().equals("Aficionado")) {
+								Menu_Aficionado menuAf = new Menu_Aficionado();
+								menuAf.setVisible(true);
+								dispose();
 							}
 						}else {
-							JOptionPane.showMessageDialog(null, "Correo y/o contraseña incorrectos");
+							JOptionPane.showMessageDialog(null, "Correo y/o contraseÃ±a incorrectos: no existe el usuario en el sistema");
 						}
-
-					} catch (Exception e2) {
-						e2.printStackTrace();
+						
+					} catch(NamingException | ServiciosException ex) {
+						ex.getMessage();
 					}
 					
-				}
-				else {
+				}else {
 					JOptionPane.showMessageDialog(null, "Por favor, complete ambos campos para poder ingresar al sistema");
-				}
+				}	
 			}			
 		});
 		
@@ -274,7 +287,7 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 	
 	
 	protected void mousePressedTextUsuario(MouseEvent e) {
-		if(textCorreo.getText().equals("Ingrese Correo electrónico")) {
+		if(textCorreo.getText().equals("Ingrese Correo electrÃ³nico")) {
 			textCorreo.setText("");
 			textCorreo.setForeground(Color.black);
 			
@@ -287,7 +300,7 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 	}
 	protected void mousePressedPassword(MouseEvent e) {
 		if(textCorreo.getText().isEmpty()) {
-			textCorreo.setText("Ingrese Correo electrónico");
+			textCorreo.setText("Ingrese Correo electrÃ³nico");
 			textCorreo.setForeground(SystemColor.controlShadow);
 		}
 		if(String.valueOf(password.getPassword()).equals("********")) {
@@ -298,4 +311,3 @@ public class LogIn extends JFrame implements MouseListener, MouseMotionListener 
 
 	}
 }
-
