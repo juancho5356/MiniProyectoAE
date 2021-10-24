@@ -1,0 +1,33 @@
+package com.servicios;
+
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+
+import model.Funcionalidad;
+
+/**
+ * Session Bean implementation class FuncionalidadBean
+ */
+@Stateless
+public class Funcionalidad_Bean implements Funcionalidad_BeanRemote {
+
+	@PersistenceContext
+	private EntityManager em;
+    /**
+     * Default constructor. 
+     */
+    public Funcionalidad_Bean() {
+    }
+
+    @Override
+    public List<Funcionalidad> mostrarTodos() {
+    	TypedQuery<Funcionalidad> query = em.createNamedQuery("Funcionalidad.findAll",Funcionalidad.class);
+    	return query.getResultList();
+    }
+    
+}
