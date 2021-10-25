@@ -1,4 +1,4 @@
-package vista;
+package Vista;
 
 import java.awt.EventQueue;
 
@@ -92,7 +92,7 @@ public class Menu_Aficionado extends JFrame implements MouseListener, MouseMotio
 		panel.add(btnFuncionalidades);
 		btnFuncionalidades.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Listado_Funcionalidades window = new Listado_Funcionalidades();
+				ListadoFuncionalidades window = new ListadoFuncionalidades();
 				window.frame.setVisible(true);
 			}
 		});
@@ -112,7 +112,7 @@ public class Menu_Aficionado extends JFrame implements MouseListener, MouseMotio
 		
 		
 		lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(Menu_Aficionado.class.getResource("/image/14.jpg")));
+		lblNewLabel.setIcon(new ImageIcon(Menu_Aficionado.class.getResource("/Vista/image/14.jpg")));
 		lblNewLabel.setBounds(0, 0, 845, 504);
 		panel.add(lblNewLabel);
 		
@@ -146,7 +146,7 @@ public class Menu_Aficionado extends JFrame implements MouseListener, MouseMotio
 		int respuesta = JOptionPane.showConfirmDialog(this, "¿ Realmente quieres cerrar sesión ?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if(respuesta == JOptionPane.YES_OPTION) {
 			
-			Login ventana = new Login();
+			LogIn ventana = new LogIn();
 			ventana.setVisible(true);
 			dispose(); 
 		}

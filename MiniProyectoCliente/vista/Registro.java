@@ -1,4 +1,4 @@
-package vista;
+package Vista;
 
 import java.awt.EventQueue;
 
@@ -34,8 +34,7 @@ import com.exception.ServiciosException;
 import com.servicios.Rol_BeanRemote;
 import com.servicios.Usuario_BeanRemote;
 
-import model.Rol;
-import model.Usuario;
+import com.entities.*;
 
 import javax.swing.JPasswordField;
 
@@ -262,7 +261,7 @@ public class Registro {
 					Rol rol = null;
 					
 					try {
-						String dato = "Mini_ProyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
+						String dato = "MiniproyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
 						Rol_BeanRemote ro = (Rol_BeanRemote) InitialContext.doLookup(dato);
 						
 						rol = ro.findNombre(r);
@@ -271,10 +270,16 @@ public class Registro {
 						ex.getMessage();
 					}
 					
-					Usuario user = new Usuario(d, n, a, m, c, rol);
+					Usuario user = new Usuario();
+					user.setDocumento(d);
+					user.setNombre(n);
+					user.setApellido(a);
+					user.setMail(m);
+					user.setClave(c);
+					user.setRol(rol);
 					
 					try {
-						String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+						String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 						Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 						
 						if(us.insert(user)) {
@@ -398,7 +403,7 @@ public class Registro {
 			}
 		});
 		
-		lblCorreo = new JLabel("Correo electr\u00F3nico");
+		lblCorreo = new JLabel("Correo electrónico");
 		lblCorreo.setFont(new Font("Baskerville Old Face", Font.PLAIN, 12));
 		lblCorreo.setBounds(22, 197, 111, 13);
 		panel_Registro.add(lblCorreo);
@@ -477,7 +482,7 @@ public class Registro {
 			
 		});
 		
-		lblClave = new JLabel("Contrase\u00F1a");
+		lblClave = new JLabel("Contraseña");
 		lblClave.setFont(new Font("Baskerville Old Face", Font.PLAIN, 12));
 		lblClave.setBounds(22, 236, 67, 13);
 		panel_Registro.add(lblClave);
@@ -512,7 +517,7 @@ public class Registro {
 		List<Rol> roles = null;
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
+			String dato = "MiniproyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
 			Rol_BeanRemote r = (Rol_BeanRemote) InitialContext.doLookup(dato);
 			
 			roles = r.findAll();
@@ -563,7 +568,7 @@ public class Registro {
 		panel_Registro.add(btnIr);
 		btnIr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Listado window = new Listado();
+				ListadoUsuarios window = new ListadoUsuarios();
 				window.frame.setVisible(true);
 			}
 		});
@@ -674,7 +679,7 @@ public class Registro {
 		Usuario user = null;
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+			String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 			Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 			user = us.findCorreo(mail);
 		
@@ -694,7 +699,7 @@ public class Registro {
 		Usuario user = null;
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+			String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 			Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 			user = us.findDocumento(cedula);
 		

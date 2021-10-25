@@ -1,4 +1,4 @@
-package vista;
+package Vista;
 
 import java.awt.EventQueue;
 
@@ -23,15 +23,13 @@ import com.servicios.Funcionalidad_BeanRemote;
 import com.servicios.Rol_BeanRemote;
 import com.servicios.Usuario_BeanRemote;
 
-import model.Funcionalidad;
-import model.Rol;
-import model.Usuario;
+import com.entities.*;
 
 import javax.swing.JTextField;
 import java.awt.SystemColor;
 import javax.swing.JTextArea;
 
-public class Listado_Funcionalidades implements MouseListener{
+public class ListadoFuncionalidades implements MouseListener{
 
 	JFrame frame;
 	private JTextField textFuncionalidad;
@@ -48,7 +46,7 @@ public class Listado_Funcionalidades implements MouseListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Listado_Funcionalidades window = new Listado_Funcionalidades();
+					ListadoFuncionalidades window = new ListadoFuncionalidades();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -60,7 +58,7 @@ public class Listado_Funcionalidades implements MouseListener{
 	/**
 	 * Create the application.
 	 */
-	public Listado_Funcionalidades() {
+	public ListadoFuncionalidades() {
 		initialize();
 	}
 
@@ -152,13 +150,13 @@ public class Listado_Funcionalidades implements MouseListener{
 		Usuario user = null;
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+			String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 			Usuario_BeanRemote ad = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 			
-			user = ad.findUser(Login.textCorreo.getText(), String.valueOf(Login.password.getPassword())); 
+			user = ad.findUser(LogIn.textCorreo.getText(), String.valueOf(LogIn.password.getPassword())); 
 			
 			if(user != null) {
-				textRol.setText(user.getRole().getNombre());
+				textRol.setText(user.getRol().getNombre());
 			}
 			
 		} catch(NamingException | ServiciosException ex) {
@@ -194,7 +192,7 @@ public class Listado_Funcionalidades implements MouseListener{
 
 		try {
 			Funcionalidad_BeanRemote funcionalidadBean = (Funcionalidad_BeanRemote)
-					InitialContext.doLookup("Mini_ProyectoEJB/Funcionalidad_Bean!com.servicios.Funcionalidad_BeanRemote");
+					InitialContext.doLookup("MiniproyectoEJB/Funcionalidad_Bean!com.servicios.Funcionalidad_BeanRemote");
 			
 			funcionalidades = funcionalidadBean.mostrarTodos();
 
@@ -226,10 +224,10 @@ public class Listado_Funcionalidades implements MouseListener{
 					Rol r = null;
 					
 					try {
-						String dato = "Mini_ProyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
+						String dato = "MiniproyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
 						Rol_BeanRemote ro = (Rol_BeanRemote) InitialContext.doLookup(dato);
 							
-						r = ro.findAcceso( rol, funcion);
+						r = ro.findAcceso(rol, funcion);
 						
 						
 						if(r != null) {

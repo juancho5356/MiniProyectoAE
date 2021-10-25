@@ -1,4 +1,4 @@
-package vista;
+package Vista;
 
 import java.awt.EventQueue;
 
@@ -13,8 +13,7 @@ import com.exception.ServiciosException;
 import com.servicios.Rol_BeanRemote;
 import com.servicios.Usuario_BeanRemote;
 
-import model.Rol;
-import model.Usuario;
+import com.entities.*;
 
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -45,7 +44,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 
-public class Listado  {
+public class ListadoUsuarios  {
 
 	JFrame frame;
 	private JPanel panel;
@@ -97,7 +96,7 @@ public class Listado  {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Listado window = new Listado();
+					ListadoUsuarios window = new ListadoUsuarios();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -109,7 +108,7 @@ public class Listado  {
 	/**
 	 * Create the application.
 	 */
-	public Listado() {
+	public ListadoUsuarios() {
 		initialize();
 	}
 
@@ -233,7 +232,7 @@ public class Listado  {
 				if(isNumero(validar, evt) == false) {
 					evt.consume();
 					
-					JOptionPane.showMessageDialog(null, "CÃ©dula debe contener solo nÃºmeros");
+					JOptionPane.showMessageDialog(null, "Cédula debe contener solo números");
 					
 				}
 					
@@ -241,8 +240,8 @@ public class Listado  {
 					evt.consume();
 					
 					if(!isCedula()) {
-						JOptionPane.showMessageDialog(null, "La CÃ©dula ingresada es incorrecta");
-						lbl1.setText("Campo invÃ¡lido");
+						JOptionPane.showMessageDialog(null, "La Cédula ingresada es incorrecta");
+						lbl1.setText("Campo inválido");
 						lbl1.setForeground(Color.RED);
 					}
 					else {
@@ -256,7 +255,7 @@ public class Listado  {
 					
 					if(existeUsuarioCedula(ci, Long.parseLong(textId.getText()))) {
 
-						JOptionPane.showMessageDialog(null, "La CÃ©dula ingresada ya existe en el sistema!");
+						JOptionPane.showMessageDialog(null, "La Cédula ingresada ya existe en el sistema!");
 						textDocumento.setText("");
 						
 						lbl1.setText("Campo requerido");
@@ -279,8 +278,8 @@ public class Listado  {
 					e.consume();
 
 					if(!isCedula()) {
-						JOptionPane.showMessageDialog(null, "La CÃ©dula ingresada es incorrecta");
-						lbl1.setText("Campo invÃ¡lido");
+						JOptionPane.showMessageDialog(null, "La Cédula ingresada es incorrecta");
+						lbl1.setText("Campo inválido");
 						lbl1.setForeground(Color.RED);
 					}
 					else {
@@ -298,7 +297,7 @@ public class Listado  {
 					
 					if(existeUsuarioCedula(ci, Long.parseLong(textId.getText()))) {
 
-						JOptionPane.showMessageDialog(null, "La CÃ©dula ingresada ya existe en el sistema!");
+						JOptionPane.showMessageDialog(null, "La Cédula ingresada ya existe en el sistema!");
 						textDocumento.setText("");
 						
 						lbl1.setText("Campo requerido");
@@ -418,7 +417,7 @@ public class Listado  {
 				if(!isEmail(textCorreo.getText())) {
 					JOptionPane.showMessageDialog(null, "Campo 'Correo' debe contener formato: example@example.com");
 					
-					lbl4.setText("Campo invÃ¡lido");
+					lbl4.setText("Campo inválido");
 					lbl4.setForeground(Color.RED);
 				}
 				else {
@@ -434,7 +433,7 @@ public class Listado  {
 			public void keyTyped(KeyEvent e) {
 				if(!isEmail(textCorreo.getText())) {
 					
-					lbl4.setText("Campo invÃ¡lido");
+					lbl4.setText("Campo inválido");
 					lbl4.setForeground(Color.RED);
 				}
 				else {
@@ -453,7 +452,7 @@ public class Listado  {
 			public void keyReleased(KeyEvent e) {
 				if(!isEmail(textCorreo.getText())) {
 					
-					lbl4.setText("Campo invÃ¡lido");
+					lbl4.setText("Campo inválido");
 					lbl4.setForeground(Color.RED);
 				}
 				else {
@@ -477,7 +476,7 @@ public class Listado  {
 			
 		});
 		
-		lblCorreo = new JLabel("Correo electr\u00F3nico");
+		lblCorreo = new JLabel("Correo electrónico");
 		lblCorreo.setFont(new Font("Baskerville Old Face", Font.PLAIN, 12));
 		lblCorreo.setBounds(22, 205, 111, 13);
 		panel_1.add(lblCorreo);
@@ -492,7 +491,7 @@ public class Listado  {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if(String.valueOf(password.getPassword()).length() < 8) {
-					lbl5.setText("Campo requerido: mÃ­nimo 8 caracteres");
+					lbl5.setText("Campo requerido: mínimo 8 caracteres");
 					lbl5.setForeground(Color.RED);
 				}
 				if(String.valueOf(password.getPassword()).equals("")) {
@@ -548,7 +547,7 @@ public class Listado  {
 			
 		});
 		
-		lblClave = new JLabel("Contrase\u00F1a");
+		lblClave = new JLabel("Contraseña");
 		lblClave.setFont(new Font("Baskerville Old Face", Font.PLAIN, 12));
 		lblClave.setBounds(22, 244, 67, 13);
 		panel_1.add(lblClave);
@@ -576,7 +575,7 @@ public class Listado  {
 		List<Rol> roles = null;
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
+			String dato = "MiniproyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
 			Rol_BeanRemote r = (Rol_BeanRemote) InitialContext.doLookup(dato);
 			
 			roles = r.findAll();
@@ -590,7 +589,7 @@ public class Listado  {
 			ex.getMessage();
 		}
 		
-		lblSelect = new JLabel("Seleccione un registro para realizar alguna modificaci\u00F3n o baja");
+		lblSelect = new JLabel("Seleccione un registro para realizar alguna modificación o baja");
 		lblSelect.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSelect.setForeground(Color.DARK_GRAY);
 		lblSelect.setBounds(459, 40, 397, 19);
@@ -618,7 +617,7 @@ public class Listado  {
 					JOptionPane.showMessageDialog(null, "Por favor ingrese todos los campos correctamente!");
 				}
 				else {
-					int respuesta = JOptionPane.showConfirmDialog(null, "Â¿ Realmente quieres modificar a este usuario ?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int respuesta = JOptionPane.showConfirmDialog(null, "¿Realmente quieres modificar a este usuario?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					
 					if(respuesta == JOptionPane.YES_OPTION) {
 						String d = textDocumento.getText();
@@ -633,7 +632,7 @@ public class Listado  {
 						Rol rol = null;
 						
 						try {
-							String dato = "Mini_ProyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
+							String dato = "MiniproyectoEJB/Rol_Bean!com.servicios.Rol_BeanRemote";
 							Rol_BeanRemote ro = (Rol_BeanRemote) InitialContext.doLookup(dato);
 							
 							rol = ro.findNombre(r);
@@ -642,12 +641,18 @@ public class Listado  {
 							ex.getMessage();
 						}
 						
-						Usuario user = new Usuario(d, n, a, m, c, rol);
+						Usuario user = new Usuario();
+						user.setDocumento(d);
+						user.setNombre(n);
+						user.setApellido(a);
+						user.setMail(m);
+						user.setClave(c);
+						user.setRol(rol);
 						
 						user.setIdUsuario(Long.parseLong(textId.getText()));
 						
 						try {
-							String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+							String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 							Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 							
 							if(us.edit(user)) {
@@ -689,7 +694,7 @@ public class Listado  {
 		separator_1.setBounds(10, 45, 545, 2);
 		panel_2.add(separator_1);
 		
-		lblNewLabel = new JLabel("Una vez seleccionado un registro del listado de usuarios, usted podr\u00E1 realizar la baja del mismo");
+		lblNewLabel = new JLabel("Una vez seleccionado un registro del listado de usuarios, usted podrá realizar la baja del mismo");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(SystemColor.windowBorder);
 		lblNewLabel.setFont(new Font("Baskerville Old Face", Font.PLAIN, 12));
@@ -707,10 +712,10 @@ public class Listado  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					int respuesta = JOptionPane.showConfirmDialog(null, "Â¿ Realmente quieres eliminar a este usuario ? Una vez hecho, no hay vuelta atrÃ¡s", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					int respuesta = JOptionPane.showConfirmDialog(null, "¿Realmente quieres eliminar a este usuario? Una vez hecho, no hay vuelta atrás", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					
 					if(respuesta == JOptionPane.YES_OPTION) {
-						String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+						String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 						Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 						
 						Usuario user = us.findId(Long.parseLong(textId.getText()));
@@ -718,7 +723,7 @@ public class Listado  {
 						user.setIdUsuario(Long.parseLong(textId.getText()));
 					
 						if(us.delete(user)) {
-							JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente)");
+							JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente");
 							limpiar();
 							listaP();
 							Habilitar(false);
@@ -767,7 +772,7 @@ public class Listado  {
 					comboBoxRol.setSelectedItem(table.getValueAt(filaSeleccionada, 5));
 					
 					try {
-						String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+						String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 						Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 						
 						Usuario u = us.findUser(table.getValueAt(filaSeleccionada, 3).toString(), table.getValueAt(filaSeleccionada, 4).toString());
@@ -819,12 +824,12 @@ public class Listado  {
 			}
 		};
 		
-		Object[] columns = {"Documento", "Nombre", "Apellido", "Correo ElectrÃ³nico", "ContraseÃ±a", "Rol"};
+		Object[] columns = {"Documento", "Nombre", "Apellido", "Correo Electrónico", "Contraseña", "Rol"};
 		model.setColumnIdentifiers(columns);
 		Object [] fila = new Object[columns.length];
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+			String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 			Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 			
 			List<Usuario> usuarios = us.findAll();
@@ -838,7 +843,7 @@ public class Listado  {
 					String a = u.getApellido();
 					String m = u.getMail();
 					String c = u.getClave();
-					String r = u.getRole().getNombre();
+					String r = u.getRol().getNombre();
 					
 					fila[0] = d;
 					fila[1] = n;
@@ -983,7 +988,7 @@ public boolean existeUsuarioMail(String mail, long id) {
 		Usuario user = null;
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+			String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 			Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 			user = us.findCorreo(mail);
 		
@@ -1006,7 +1011,7 @@ public boolean existeUsuarioMail(String mail, long id) {
 		Usuario user = null;
 		
 		try {
-			String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+			String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 			Usuario_BeanRemote us = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 			user = us.findDocumento(cedula);
 		

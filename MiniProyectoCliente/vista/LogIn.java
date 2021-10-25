@@ -1,4 +1,4 @@
-package vista;
+package Vista;
 
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 
-import model.Usuario;
+import com.entities.*;
 
 import com.exception.ServiciosException;
 import com.servicios.Usuario_BeanRemote;
@@ -35,7 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-public class Login extends JFrame implements MouseListener, MouseMotionListener {
+public class LogIn extends JFrame implements MouseListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -66,7 +66,7 @@ public class Login extends JFrame implements MouseListener, MouseMotionListener 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login frame = new Login();
+					LogIn frame = new LogIn();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -80,7 +80,7 @@ public class Login extends JFrame implements MouseListener, MouseMotionListener 
 	 */
 	int xMouse, yMouse; 
 	
-	public Login() {
+	public LogIn() {
 		setLocationByPlatform(true);
 		setUndecorated(true);
 		setResizable(false);
@@ -92,7 +92,7 @@ public class Login extends JFrame implements MouseListener, MouseMotionListener 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 				
-		ImageIcon image2 = new ImageIcon(getClass().getResource("/image/fondo.jpg"));
+		ImageIcon image2 = new ImageIcon(getClass().getResource("/Vista/fondo.jpg"));
 		
 		panel = new JPanel();
 		panel.setBackground(SystemColor.control);
@@ -133,7 +133,7 @@ public class Login extends JFrame implements MouseListener, MouseMotionListener 
 		));
 		lblFondo.setIcon(fondo2);
 		
-		lblUsuario = new JLabel("Correo electr贸nico");
+		lblUsuario = new JLabel("Correo electr髇ico");
 		lblUsuario.setFont(new Font("Baskerville Old Face", Font.PLAIN, 20));
 		lblUsuario.setBounds(85, 143, 229, 42);
 		panel.add(lblUsuario);
@@ -144,12 +144,12 @@ public class Login extends JFrame implements MouseListener, MouseMotionListener 
 		textCorreo.setBorder(null);
 		textCorreo.setForeground(SystemColor.controlShadow);
 		textCorreo.setFont(new Font("Baskerville Old Face", Font.PLAIN, 16));
-		textCorreo.setText("Ingrese Correo electr贸nico");
+		textCorreo.setText("Ingrese Correo electr\u00F3nico");
 		textCorreo.setBounds(85, 195, 404, 25);
 		panel.add(textCorreo);
 		textCorreo.setColumns(10);
 		
-		lblContrasenia = new JLabel("Contrase\u00F1a");
+		lblContrasenia = new JLabel("Contrase馻");
 		lblContrasenia.setFont(new Font("Baskerville Old Face", Font.PLAIN, 20));
 		lblContrasenia.setBounds(85, 251, 229, 42);
 		panel.add(lblContrasenia);
@@ -176,36 +176,36 @@ public class Login extends JFrame implements MouseListener, MouseMotionListener 
 		btnIngresar.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				if(!(textCorreo.getText().isEmpty() || String.valueOf(password.getPassword()).isEmpty() || textCorreo.getText().equals("Ingrese Correo electr贸nico") ||String.valueOf(password.getPassword()).equals("********"))) {
+				if(!(textCorreo.getText().isEmpty() || String.valueOf(password.getPassword()).isEmpty() || textCorreo.getText().equals("Ingrese Correo electr髇ico") ||String.valueOf(password.getPassword()).equals("********"))) {
 					
 					Usuario user = null;
 					
 					try {
-						String dato = "Mini_ProyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
+						String dato = "MiniproyectoEJB/Usuario_Bean!com.servicios.Usuario_BeanRemote";
 						Usuario_BeanRemote ad = (Usuario_BeanRemote) InitialContext.doLookup(dato);
 						
 						user = ad.findUser(textCorreo.getText(), String.valueOf(password.getPassword())); 
 						
 						if(user != null) {
-							JOptionPane.showMessageDialog(null, "Bienvenid@ al sistema " + user.getNombre()+" "+ user.getApellido() + " !");
+							JOptionPane.showMessageDialog(null, "Bienvenid@ al sistema " + user.getNombre()+" "+ user.getApellido() + "!");
 
-							if(user.getRole().getNombre().equals("Administrador")) {
+							if(user.getRol().getNombre().equals("Administrador")) {
 								Menu_Administrador menuA = new Menu_Administrador();
 								menuA.setVisible(true);
 								dispose();
 							}
-							if(user.getRole().getNombre().equals("Investigador")) {
+							if(user.getRol().getNombre().equals("Investigador")) {
 								Menu_Investigador menuI = new Menu_Investigador();
 								menuI.setVisible(true);
 								dispose();
 							}
-							if(user.getRole().getNombre().equals("Aficionado")) {
+							if(user.getRol().getNombre().equals("Aficionado")) {
 								Menu_Aficionado menuAf = new Menu_Aficionado();
 								menuAf.setVisible(true);
 								dispose();
 							}
 						}else {
-							JOptionPane.showMessageDialog(null, "Correo y/o contrase帽a incorrectos: no existe el usuario en el sistema");
+							JOptionPane.showMessageDialog(null, "Correo y/o contrase馻 incorrectos: no existe el usuario en el sistema");
 						}
 						
 					} catch(NamingException | ServiciosException ex) {
@@ -287,7 +287,7 @@ public class Login extends JFrame implements MouseListener, MouseMotionListener 
 	
 	
 	protected void mousePressedTextUsuario(MouseEvent e) {
-		if(textCorreo.getText().equals("Ingrese Correo electr贸nico")) {
+		if(textCorreo.getText().equals("Ingrese Correo electr髇ico")) {
 			textCorreo.setText("");
 			textCorreo.setForeground(Color.black);
 			
